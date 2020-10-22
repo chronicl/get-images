@@ -38,7 +38,7 @@ async fn download_image(url: &str, url_number: usize, image_number: &mut u32) ->
 
     // writing to file
     fs::write(
-        format!("{}.{}", image_number, image_type),
+        format!("pics/{}.{}", image_number, image_type),
         res.bytes().await?,
     )
     .unwrap();
@@ -61,6 +61,7 @@ async fn main() -> Result<()> {
 
     let mut image_number: u32 = 1;
 
+    fs::create_dir("pics").except("Couldn't create pics folder");
     for (i, line) in lines.enumerate() {
         download_image(
             &(line.unwrap_or_else(|err| {
